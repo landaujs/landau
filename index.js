@@ -16,7 +16,15 @@ const Rotate = require('./src/Rotate');
 const Scale = require('./src/Scale');
 const Translate = require('./src/Translate');
 
-const createElement = (element) => {
+const createElement = (type) => {
+  if (type.elementName) {
+    return createElementPureJsx(type);
+  } else {
+    throw new Error("Error creating Element. This might be caused by using `babel-plugin-transform-react-jsx` instead of `babel-plugin-transform-jsx`.");
+  }
+};
+
+const createElementPureJsx = (element) => {
   const elementClass = element.elementName;
   const props = element.attributes;
 
