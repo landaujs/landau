@@ -1,9 +1,10 @@
 {
-  "name": "landau",
+  "name": "@landaujs/landau",
   "version": "0.0.1",
   "description": "OpenJSCAD with JSX syntax",
   "main": "index.js",
-  "repository": {},
+  "repository": "github:landaujs/landau",
+  "bugs": "https://github.com/landaujs/landau/issues",
   "author": "Maximilian Goisser <goisser94@gmail.com>",
   "license": "MIT",
   "dependencies": {
