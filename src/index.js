@@ -1,20 +1,20 @@
-const LandauElement = require('./src/LandauElement');
+const LandauElement = require('./LandauElement');
 
-const Cube = require('./src/Cube');
-const Cylinder = require('./src/Cylinder');
-const GeodesicSphere = require('./src/GeodesicSphere');
-const Polyhedron = require('./src/Polyhedron');
-const Sphere = require('./src/Sphere');
-const Torus = require('./src/Torus');
+const Cube = require('./Cube');
+const Cylinder = require('./Cylinder');
+const GeodesicSphere = require('./GeodesicSphere');
+const Polyhedron = require('./Polyhedron');
+const Sphere = require('./Sphere');
+const Torus = require('./Torus');
 
-const Difference = require('./src/Difference');
-const Union = require('./src/Union');
+const Difference = require('./Difference');
+const Union = require('./Union');
 
-const Center = require('./src/Center');
-const Mirror = require('./src/Mirror');
-const Rotate = require('./src/Rotate');
-const Scale = require('./src/Scale');
-const Translate = require('./src/Translate');
+const Center = require('./Center');
+const Mirror = require('./Mirror');
+const Rotate = require('./Rotate');
+const Scale = require('./Scale');
+const Translate = require('./Translate');
 
 const createElement = (type) => {
   if (type.elementName) {
