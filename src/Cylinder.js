@@ -2,7 +2,7 @@
 const scadApi = require('@jscad/scad-api');
 const {cylinder} = scadApi.primitives3d;
 
-const LandauElement = require('./LandauElement');
+const Component = require('./Component');
 
 type DetailedRadius = {
   start: number,
@@ -34,10 +34,10 @@ type Props = {
   center?: boolean | Array<boolean>,
 };
 
-class Cylinder extends LandauElement {
+class Cylinder extends Component {
   props: Props;
 
-  render() {
+  applyCsg() {
     const args = {};
     if (this.props.radius != null) {
       if (typeof this.props.radius === 'number') {

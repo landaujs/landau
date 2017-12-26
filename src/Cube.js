@@ -2,7 +2,7 @@
 const scadApi = require('@jscad/scad-api');
 const {cube} = scadApi.primitives3d;
 
-const LandauElement = require('./LandauElement');
+const Component = require('./Component');
 
 type Props = {
   /**
@@ -21,7 +21,7 @@ type Props = {
   center?: boolean | Array<boolean>,
 };
 
-class Cube extends LandauElement {
+class Cube extends Component {
   props: Props;
 
   constructor(props: Props) {
@@ -30,7 +30,7 @@ class Cube extends LandauElement {
     this.props.center = this.props.center || false;
   }
 
-  render() {
+  applyCsg() {
     return cube({size: this.props.size, center: this.props.center});
   }
 }

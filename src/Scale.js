@@ -1,11 +1,11 @@
 const scadApi = require('@jscad/scad-api');
 const {scale} = scadApi.transformations;
 
-const LandauElement = require('./LandauElement');
+const Component = require('./Component');
 
-class Scale extends LandauElement {
-  render() {
-    return scale(this.props.vector, ...this.props.children.map(child => child.render()));
+class Scale extends Component {
+  applyCsg(renderedChildren) {
+    return scale(this.props.vector, ...renderedChildren);
   }
 }
 

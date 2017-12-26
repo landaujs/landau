@@ -1,10 +1,10 @@
 const scadApi = require('@jscad/scad-api');
 const {polyhedron} = scadApi.primitives3d;
 
-const LandauElement = require('./LandauElement');
+const Component = require('./Component');
 
-class Polyhedron extends LandauElement {
-  render() {
+class Polyhedron extends Component {
+  applyCsg() {
     return polyhedron({points: this.props.points, polygons: this.props.polygons});
   }
 }

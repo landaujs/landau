@@ -1,3 +1,6 @@
+const renderer = require('./renderer');
+
+const Component = require('./Component');
 const LandauElement = require('./LandauElement');
 
 const Cube = require('./Cube');
@@ -16,36 +19,15 @@ const Rotate = require('./Rotate');
 const Scale = require('./Scale');
 const Translate = require('./Translate');
 
-const createElement = (type) => {
-  if (type.elementName) {
-    return createElementPureJsx(type);
-  } else {
-    throw new Error("Error creating Element. This might be caused by using `babel-plugin-transform-react-jsx` instead of `babel-plugin-transform-jsx`.");
-  }
-};
-
-const createElementPureJsx = (element) => {
-  const elementClass = element.elementName;
-  const props = element.attributes;
-
-  let children = element.children;
-  if (children && children.length === 1 && Array.isArray(children[0])) {
-    children = children[0];
-  }
-  props.children = props.children || children; // TODO: warn when both are present
-  if (props.children) {
-    // Filter out comments
-    props.children = props.children.filter(function(x) {
-      return x !== '';
-    });
-  }
-
-  return new elementClass(props);
-};
 
 module.exports = {
-  createElement,
+  createElement: LandauElement.createElement,
+  materializeTree: renderer.materializeTree,
+  renderAsCsg: renderer.renderAsCsg,
+  renderAsTree: renderer.renderAsTree,
+  renderAsTreeString: renderer.renderAsTreeString,
 
+  Component,
   LandauElement,
 
   Cube,

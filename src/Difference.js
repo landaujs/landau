@@ -2,17 +2,17 @@
 const scadApi = require('@jscad/scad-api');
 const {difference} = scadApi.booleanOps;
 
-const LandauElement = require('./LandauElement');
+const Component = require('./Component');
 
 type Props = {
   children: Array<Object>,
 };
 
-class Difference extends LandauElement {
+class Difference extends Component {
   props: Props;
 
-  render() {
-    return difference(...this.props.children.map(child => child.render()));
+  applyCsg(renderedChildren) {
+    return difference(...renderedChildren);
   }
 }
 

@@ -2,7 +2,7 @@
 const scadApi = require('@jscad/scad-api');
 const {center} = scadApi.transformations;
 
-const LandauElement = require('./LandauElement');
+const Component = require('./Component');
 
 type Props = {
   /**
@@ -19,7 +19,7 @@ type Props = {
 /**
 TODO: remove? This doesn't seem to do anything.
 */
-class Center extends LandauElement {
+class Center extends Component {
   props: Props;
 
   constructor(props: Props) {
@@ -27,8 +27,8 @@ class Center extends LandauElement {
     this.props.vector = props.vector;
   }
 
-  render() {
-    return center(this.props.vector, ...this.props.children.map(child => child.render()));
+  applyCsg(renderedChildren) {
+    return center(this.props.vector, ...renderedChildren);
   }
 }
 

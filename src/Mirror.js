@@ -1,11 +1,11 @@
 const scadApi = require('@jscad/scad-api');
 const {mirror} = scadApi.transformations;
 
-const LandauElement = require('./LandauElement');
+const Component = require('./Component');
 
-class Mirror extends LandauElement {
-  render() {
-    return mirror(this.props.normal, ...this.props.children.map(child => child.render()));
+class Mirror extends Component {
+  applyCsg(renderedChildren) {
+    return mirror(this.props.normal, ...renderedChildren);
   }
 }
 

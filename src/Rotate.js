@@ -1,11 +1,11 @@
 const scadApi = require('@jscad/scad-api');
 const {rotate} = scadApi.transformations;
 
-const LandauElement = require('./LandauElement');
+const Component = require('./Component');
 
-class Rotate extends LandauElement {
-  render() {
-    return rotate(this.props.vector, ...this.props.children.map(child => child.render()));
+class Rotate extends Component {
+  applyCsg(renderedChildren) {
+    return rotate(this.props.vector, ...renderedChildren);
   }
 }
 

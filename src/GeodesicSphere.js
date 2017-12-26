@@ -1,15 +1,15 @@
 const scadApi = require('@jscad/scad-api');
 const {geodesicSphere} = scadApi.primitives3d;
 
-const LandauElement = require('./LandauElement');
+const Component = require('./Component');
 
-class GeodesicSphere extends LandauElement {
+class GeodesicSphere extends Component {
   constructor(props) {
     super(props);
     this.props.center = this.props.center || false;
   }
 
-  render() {
+  applyCsg() {
     return geodesicSphere(this.props);
   }
 }
