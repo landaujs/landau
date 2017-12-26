@@ -1,6 +1,6 @@
 {
   "name": "@landaujs/landau",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "OpenJSCAD with JSX syntax",
   "main": "lib/index.js",
   "repository": "github:landaujs/landau",
