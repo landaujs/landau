@@ -8,25 +8,33 @@
   "author": "Maximilian Goisser <goisser94@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "npm run build:clean && npm run build:lib && npm run build:flow",
-    "build:clean": "rimraf lib",
-    "build:lib": "babel -d lib src --ignore '**/__tests__/**'",
-    "build:flow": "flow-copy-source -v -i '**/__tests__/**' src lib",
-    "test": "npm run test:jest",
-    "test:jest": "jest"
+    "build": "node_modules/.bin/microbundle --target node"
   },
   "dependencies": {
-    "@jscad/scad-api": "^0.3.6"
+    "@jscad/modeling": "^2.0.0-alpha.11",
+    "@jscad/stl-serializer": "^2.0.0-alpha.11",
+    "@jscad/io": "^2.0.0-alpha.11",
+    "react": "^16.13.1",
+    "react-reconciler": "^0.25.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.25.0",
-    "babel-jest": "^21.2.0",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-preset-es2015": "^6.24.1",
-    "flow-bin": "^0.51.0",
-    "flow-copy-source": "^1.2.0",
-    "jest": "^21.2.1",
-    "rimraf": "^2.6.1"
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "7.9.0",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-transform-flow-strip-types": "^7.13.0",
+    "babel-eslint": "10.1.0",
+    "babel-plugin-named-asset-import": "^0.3.6",
+    "babel-preset-react-app": "^9.1.2",
+    "debug": "^4.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "4.6.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "lodash": "^4.17.21",
+    "microbundle": "^0.13.0",
+    "prettier": "^2.2.1"
   }
 }
