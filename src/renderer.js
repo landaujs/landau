@@ -35,13 +35,17 @@ const createInstance = (type, props, ...args) => {
 };
 
 const renderPackage = (pkg, outputPath, cacheDir, cacheable) => {
-  // TODO: proper args
   debug("props", pkg.props);
   const renderedChildren = pkg.children.map((child) => {
     return renderPackage(child);
   });
   if (pkg.fn.length === 1) {
-    return pkg.fn(pkg.props, ...renderedChildren);
+    // HACK: special case for colorize, as it doesn't take an options argument in first position
+    if (pkg.props.color) {
+      return pkg.fn(pkg.props.color, ...renderedChildren);
+    } else {
+      return pkg.fn(pkg.props, ...renderedChildren);
+    }
   } else {
     return pkg.fn(...renderedChildren);
   }
