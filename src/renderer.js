@@ -80,6 +80,7 @@ const HostConfig = {
     const cacheDir = container.cacheDir || DEFAULT_CACHE_DIR;
     debug("renderPackage", child, outputPath, ...args);
     const outputGeometry = renderPackage(child, outputPath, cacheDir, true);
+    container.csg = outputGeometry;
     debug("geometry", outputGeometry);
     if (outputPath) {
       const rawData = io.solidsAsBlob(outputGeometry, { format: "stl" });
