@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@jscad/modeling": "^2.0.0-alpha.11",
-    "@jscad/stl-serializer": "^2.0.0-alpha.11",
     "@jscad/io": "^2.0.0-alpha.11",
     "react": "^16.13.1",
     "react-reconciler": "^0.25.1"

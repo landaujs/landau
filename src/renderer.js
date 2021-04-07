@@ -4,7 +4,6 @@ import _ from "lodash";
 import fs from "fs";
 import io from "@jscad/io";
 import modeling from "@jscad/modeling";
-import stlSerializer from "@jscad/stl-serializer";
 
 const DEFAULT_CACHE_DIR = ".render_cache";
 
@@ -41,6 +40,16 @@ const renderPackage = (pkg, outputPath, cacheDir, cacheable) => {
     return renderPackage(child);
   });
   if (pkg.fn.length === 1) {
+    const simpleArgFn = {
+      colorize: "color",
+      rotate: "angles",
+      rotateX: "angle",
+      rotateY: "angle",
+      rotateZ: "angle",
+    };
+    if (Object.keys(simpleArgFn).includes(pkg.type)) {
+      return pkg.fn(pkg.props[simpleArgFn[pkg.type]], ...renderedChildren);
+    }
     return pkg.fn(pkg.props, ...renderedChildren);
   } else {
     return pkg.fn(...renderedChildren);
@@ -83,8 +92,8 @@ const HostConfig = {
     container.csg = outputGeometry;
     debug("geometry", outputGeometry);
     if (outputPath) {
+      // TODO: make format configurable
       const rawData = io.solidsAsBlob(outputGeometry, { format: "stl" });
-      // const rawData = stlSerializer.serialize({binary: true}, outputGeometry);
       fs.writeFileSync(outputPath, rawData.asBuffer());
     }
   },
