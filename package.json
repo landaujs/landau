@@ -11,8 +11,8 @@
     "build": "node_modules/.bin/microbundle --target node"
   },
   "dependencies": {
+    "@jscad/io": "^2.0.0-alpha.13",
     "@jscad/modeling": "^2.0.0-alpha.11",
-    "@jscad/io": "^2.0.0-alpha.11",
     "react": "^16.13.1",
     "react-reconciler": "^0.25.1"
   },

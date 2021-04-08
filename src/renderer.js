@@ -46,6 +46,14 @@ const renderPackage = (pkg, outputPath, cacheDir, cacheable) => {
       rotateX: "angle",
       rotateY: "angle",
       rotateZ: "angle",
+      translate: "offset",
+      translateX: "offset",
+      translateY: "offset",
+      translateZ: "offset",
+      scale: "factors",
+      scaleX: "factor",
+      scaleY: "factor",
+      scaleZ: "factor",
     };
     if (Object.keys(simpleArgFn).includes(pkg.type)) {
       return pkg.fn(pkg.props[simpleArgFn[pkg.type]], ...renderedChildren);
