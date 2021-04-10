@@ -108,6 +108,9 @@ const HostConfig = {
   finalizeInitialChildren: function (...args) {
     return false;
   },
+  clearContainer: function (container) {
+    delete container.csg;
+  },
 
   prepareForCommit: (container) => {},
   resetAfterCommit: (container) => {},
