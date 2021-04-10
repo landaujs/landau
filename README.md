@@ -18,8 +18,8 @@ npm install --save @landaujs/landau
 
 Landau is intended to be a central but extensible building block in a bigger ecosystem of CAD applications. More helpful projects you can use with Landau:
 
-- [landau-packager](https://github.com/landaujs/landau-packager): Server for rendering and retrieving information about Landau modules. A good base for building GUIs and non-JS applications related to Landau.
-- [atom-landau-viewer](https://github.com/landaujs/atom-landau-viewer): Plugin for the [Atom editor](https://atom.io/), providing a live view of rendered Landau modules in the editor.
+- [landau-packager](https://github.com/landaujs/landau-packager): Server for rendering and retrieving information about Landau models. A good base for building GUIs and non-JS applications related to Landau.
+- [landau-standalone-viewer](https://github.com/landaujs/landau-standalone-viewer): Eletron based viewer, providing a live view of rendered Landau models.
 
 ## License
 

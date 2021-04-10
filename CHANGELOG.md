@@ -1,3 +1,7 @@
+## 0.2.0 (alpha, unreleased)
+
+* Switched to `react` and `react-reconciler` instead of trying to implement a React-like system ourselves.
+
 ## 0.1.0 (2017-12-26)
 
 #### Features
