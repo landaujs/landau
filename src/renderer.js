@@ -1,9 +1,11 @@
 import Reconciler from "react-reconciler";
 import { createContext } from "react";
+import * as ReactIs from "react-is";
 import _ from "lodash";
 import fs from "fs";
 import io from "@jscad/io";
 import modeling from "@jscad/modeling";
+import uuid from "uuid";
 
 const DEFAULT_CACHE_DIR = ".render_cache";
 
@@ -11,7 +13,13 @@ const debug = require("debug")("landau-renderer");
 
 const rendererContext = createContext({ cacheDir: DEFAULT_CACHE_DIR });
 
-const createInstance = (type, props, ...args) => {
+const createInstance = (
+  type,
+  props,
+  rootContainer,
+  hostContext,
+  internalHandle
+) => {
   const modelingOp =
     _.get(modeling, `colors.${type}`) ||
     _.get(modeling, `primitives.${type}`) ||
@@ -21,16 +29,50 @@ const createInstance = (type, props, ...args) => {
     _.get(modeling, `hulls.${type}`) ||
     _.get(modeling, `modifiers.${type}`) ||
     _.get(modeling, `transforms.${type}`);
-  debug("createInstance", type, props);
+  debug("createInstance", type, props, internalHandle);
   if (!modelingOp) {
     throw new Error(`Unrecognized instance type ${type}`);
   }
+
+  const fiberTree = buildFiberTree(internalHandle);
+  const randomId = uuid.v4();
   return {
+    id: randomId,
     type,
     props,
     fn: modelingOp,
     children: [],
+    internalHandle,
   };
+};
+
+const buildFiberTree = (interalHandle) => {
+  const findRootNode = (returnFiber) => {
+    if (!returnFiber.return) {
+      return returnFiber;
+    }
+    return findRootNode(returnFiber.return);
+  };
+
+  const rootNode = findRootNode(interalHandle.return);
+
+  const buildTree = (node) => {
+    const children = [];
+    let siblingNode = node.child;
+    while (siblingNode) {
+      children.push(buildTree(siblingNode));
+      siblingNode = siblingNode.sibling;
+    }
+
+    return {
+      displayName:
+        _.get(node, "elementType.name") || _.get(node, "elementType") || "Root",
+      _randomId: _.get(node, "stateNode.id"),
+      children,
+    };
+  };
+
+  return buildTree(rootNode);
 };
 
 const renderPackage = (pkg, outputPath, cacheDir, cacheable) => {
@@ -39,29 +81,38 @@ const renderPackage = (pkg, outputPath, cacheDir, cacheable) => {
   const renderedChildren = pkg.children.map((child) => {
     return renderPackage(child);
   });
-  if (pkg.fn.length === 1) {
-    const simpleArgFn = {
-      colorize: "color",
-      rotate: "angles",
-      rotateX: "angle",
-      rotateY: "angle",
-      rotateZ: "angle",
-      translate: "offset",
-      translateX: "offset",
-      translateY: "offset",
-      translateZ: "offset",
-      scale: "factors",
-      scaleX: "factor",
-      scaleY: "factor",
-      scaleZ: "factor",
-    };
-    if (Object.keys(simpleArgFn).includes(pkg.type)) {
-      return pkg.fn(pkg.props[simpleArgFn[pkg.type]], ...renderedChildren);
+
+  const execPkgFn = (pkg) => {
+    if (pkg.fn.length === 1) {
+      const simpleArgFn = {
+        colorize: "color",
+        rotate: "angles",
+        rotateX: "angle",
+        rotateY: "angle",
+        rotateZ: "angle",
+        translate: "offset",
+        translateX: "offset",
+        translateY: "offset",
+        translateZ: "offset",
+        scale: "factors",
+        scaleX: "factor",
+        scaleY: "factor",
+        scaleZ: "factor",
+      };
+      if (Object.keys(simpleArgFn).includes(pkg.type)) {
+        return pkg.fn(pkg.props[simpleArgFn[pkg.type]], ...renderedChildren);
+      }
+      return pkg.fn(pkg.props, ...renderedChildren);
+    } else {
+      return pkg.fn(...renderedChildren);
     }
-    return pkg.fn(pkg.props, ...renderedChildren);
-  } else {
-    return pkg.fn(...renderedChildren);
-  }
+  };
+
+  const csg = execPkgFn(pkg);
+  // csg.fiberTree = pkg.fiberTree;
+  csg.id = pkg.id;
+  csg.children = renderedChildren;
+  return csg;
 };
 
 const HostConfig = {
@@ -76,7 +127,7 @@ const HostConfig = {
     };
   },
   getChildHostContext: (parentContext, fiberType, rootInstance) => {
-    debug("getChildHostContext", parentContext, rootInstance);
+    debug("getChildHostContext", parentContext, fiberType, rootInstance);
     // return { MARKER: "CHILD HOST CONTEXT", outputPath: rootInstance.path };
     return { MARKER: "CHILD HOST CONTEXT" };
   },
@@ -90,6 +141,7 @@ const HostConfig = {
     debug("createTextInstance", ...args);
   },
   appendInitialChild: (parent, child) => {
+    debug("appendInitialChild", child);
     parent.children.push(child);
   },
   appendChildToContainer: (container, child, ...args) => {
@@ -98,6 +150,8 @@ const HostConfig = {
     debug("renderPackage", child, outputPath, ...args);
     const outputGeometry = renderPackage(child, outputPath, cacheDir, true);
     container.csg = outputGeometry;
+    debug("internalHandle", child.internalHandle);
+    container.csg.fiberTree = buildFiberTree(child.internalHandle);
     debug("geometry", outputGeometry);
     if (outputPath) {
       // TODO: make format configurable
